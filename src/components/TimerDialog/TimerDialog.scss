@@ -1,0 +1,6 @@
+@import '../../styles/variables';
+.MuiPopover-root.MuiMenu-root {
+    .MuiList-root.MuiMenu-list {
+        height: $space-200;
+    }
+}

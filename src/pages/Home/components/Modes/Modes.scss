@@ -5,7 +5,7 @@ $mode-transition: all 0.5s ease;
 .modes {
     width: $w-full;
     height: $h-full;
-    padding: $mg-1;
+    padding: $mg-2;
     box-shadow: shadowing($disabled, $white);
     border-radius: $rounded;
     display: flex;
@@ -36,7 +36,6 @@ $mode-transition: all 0.5s ease;
             display: flex;
             align-items: center;
         }
-
         &:hover {
             color: $primary;
         }

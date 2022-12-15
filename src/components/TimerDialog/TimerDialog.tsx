@@ -12,7 +12,9 @@ import {
     Select,
     SelectChangeEvent,
 } from '@mui/material';
+import { HOURS, MINUTES } from 'constant/Timer';
 import React, { useState } from 'react';
+import './TimerDialog.scss';
 
 type Props = {
     open: boolean;
@@ -39,46 +41,43 @@ const TimerDialog = ({ open, setOpen }: Props) => {
         }
     };
     return (
-        <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
+        <Dialog
+            disableEscapeKeyDown
+            open={open}
+            onClose={handleClose}
+            className='dialog'
+        >
             <DialogTitle>Fill the form</DialogTitle>
             <DialogContent>
                 <Box component='form' sx={{ display: 'flex' }}>
                     <FormControl sx={{ m: 1, minWidth: 120 }}>
-                        <InputLabel htmlFor='demo-dialog-native'>
-                            Hours
-                        </InputLabel>
+                        <InputLabel htmlFor='hours'>Hours</InputLabel>
                         <Select
-                            labelId='demo-dialog-select-label'
-                            id='demo-dialog-select'
+                            className='form__select'
+                            labelId='hours'
+                            id='hours'
                             value={hours}
                             onChange={handleChangeHours}
                             input={<OutlinedInput label='Hours' />}
                         >
-                            <MenuItem value={0}>0</MenuItem>
-                            <MenuItem value={1}>1</MenuItem>
-                            <MenuItem value={2}>2</MenuItem>
-                            <MenuItem value={3}>3</MenuItem>
+                            {HOURS.map((hour) => (
+                                <MenuItem value={hour}>{hour}</MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
                     <FormControl sx={{ m: 1, minWidth: 120 }}>
-                        <InputLabel id='demo-dialog-select-label'>
-                            Minutes
-                        </InputLabel>
+                        <InputLabel id='minutes'>Minutes</InputLabel>
                         <Select
-                            labelId='demo-dialog-select-label'
-                            id='demo-dialog-select'
+                            className='form__select'
+                            labelId='minutes'
+                            id='minutes'
                             value={minutes}
                             onChange={handleChangeMinutes}
                             input={<OutlinedInput label='Minutes' />}
                         >
-                            <MenuItem value={0}>0</MenuItem>
-                            <MenuItem value={1}>1</MenuItem>
-                            <MenuItem value={2}>2</MenuItem>
-                            <MenuItem value={5}>5</MenuItem>
-                            <MenuItem value={10}>10</MenuItem>
-                            <MenuItem value={15}>15</MenuItem>
-                            <MenuItem value={30}>30</MenuItem>
-                            <MenuItem value={45}>45</MenuItem>
+                            {MINUTES.map((minutes) => (
+                                <MenuItem value={minutes}>{minutes}</MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
                 </Box>

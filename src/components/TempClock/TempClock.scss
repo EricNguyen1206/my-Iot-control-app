@@ -1,0 +1,25 @@
+@import '../../styles/variables';
+
+$box-width: $space-150;
+$box-height: $space-150;
+$fs-tempclock: 64px;
+// Temperature clock
+.temp-clock {
+    width: $box-width;
+    height: $box-height;
+    background-color: $neutro-info;
+    box-shadow: shadowing($disabled, $white);
+    border-radius: $circle;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &__number.MuiTypography-root {
+        margin-left: $mg-4;
+        font-size: $fs-tempclock;
+        font-weight: $fw-500 !important;
+        color: $primary;
+    }
+    &.active {
+        box-shadow: innerShadowing($disabled, $white);
+    }
+}

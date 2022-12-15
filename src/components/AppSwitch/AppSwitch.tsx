@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import React from 'react';
 import './AppSwitch.scss';
 
@@ -11,10 +12,10 @@ const AppSwitch = ({ open, setOpen }: Props) => {
         setOpen(!open);
     };
     return (
-        <div className='switch' onClick={handleClick}>
+        <Box className='switch' onClick={handleClick}>
             <input className='switch__input' type='checkbox' />
             <label className={`switch__label ${open && 'checked'}`}></label>
-        </div>
+        </Box>
     );
 };
 

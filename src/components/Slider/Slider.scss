@@ -1,0 +1,93 @@
+@import '../../styles/variables';
+
+$btn-shadow: 0px 0.1rem 0.3rem 0px $disabled;
+$btn-zindex: 200;
+$color-width: 50%;
+$color-zindex: 100;
+$tooltip-transition: opacity 0.3s ease;
+
+/*  RANGE-SLIDER  */
+.slider {
+    width: $w-full;
+    &__component {
+        &.MuiSlider-root {
+            height: $mg-2;
+            color: $primary;
+            padding: $mg-2 0;
+        }
+        .MuiSlider-rail {
+            box-shadow: innerShadowing($disabled, $white);
+        }
+        .MuiSlider-thumb.MuiSlider-thumbColorPrimary {
+            color: $primary;
+        }
+        .MuiSlider-mark {
+            &:first-child,
+            &:last-child {
+                display: none;
+            }
+        }
+    }
+    &__box {
+        width: $w-full;
+        height: $mg-2;
+        cursor: pointer;
+        box-shadow: innerShadowing($disabled, $white);
+        border-radius: $rounded;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__btn {
+        width: $mg-5;
+        height: $mg-5;
+        border-radius: $circle;
+        background: $white;
+        position: absolute;
+        box-shadow: $btn-shadow;
+        z-index: $btn-zindex;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:hover ~ .slider__tooltip {
+            opacity: 1;
+        }
+        &::after {
+            content: '';
+            position: absolute;
+            width: $mg-2;
+            height: $mg-2;
+            border-radius: $circle;
+            box-shadow: innerShadowing($disabled, $white);
+        }
+    }
+
+    &__color {
+        height: $h-full;
+        width: $color-width;
+        position: absolute;
+        left: 0;
+        z-index: $color-zindex;
+        border-radius: inherit;
+        background: $primary;
+    }
+
+    &__tooltip {
+        position: absolute;
+        top: $mg-6;
+        height: $mg-6;
+        width: $mg-7;
+        border-radius: $shaped;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: $fs-xs;
+        color: $primary;
+        box-shadow: shadowing($disabled, $white);
+        opacity: 0;
+        transition: $tooltip-transition;
+    }
+}

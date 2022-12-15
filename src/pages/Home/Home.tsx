@@ -3,29 +3,34 @@ import React from 'react';
 import './Home.scss';
 import AppSwitch from 'components/AppSwitch';
 import TimerDialog from 'components/TimerDialog';
-import useHome from './hooks/useHome';
+import useHome, { Mode } from './hooks/useHome';
 import Counter from './components/Counter';
 import Modes from './components/Modes';
 import PlayButton from './components/PlayButton';
+import TempClock from 'components/TempClock';
+// import Slider from '@mui/material/Slider/Slider';
+import Slider from 'components/Slider';
 
 type Props = {};
 
 const Home = (props: Props) => {
-    const [
+    const {
         timer,
         rotate,
         powerOn,
         powerMode,
         countdown,
+        temperature,
         openDialog,
         startTimer,
         setRotate,
         setPowerOn,
         setPowerMode,
         setCountdown,
+        setTemperature,
         setOpenDialog,
         setStartTimer,
-    ] = useHome();
+    } = useHome();
 
     return (
         <React.Fragment>
@@ -39,7 +44,12 @@ const Home = (props: Props) => {
                     className='home-wrapper'
                 >
                     <Grid item xs={4} className='home-power'>
-                        <PlayButton />
+                        <PlayButton
+                            powerOn={powerOn}
+                            setPowerOn={setPowerOn}
+                            mode={powerMode}
+                            temperature={temperature}
+                        />
                     </Grid>
                     <Grid item xs={8} className='home-setting'>
                         <Box className='home-setting__wrapper'>
@@ -50,13 +60,17 @@ const Home = (props: Props) => {
                                 />
                             </Box>
                             <Box className='home-setting__rotate'>
-                                <Typography
-                                    variant='h3'
-                                    className='home-setting__rotate--label'
-                                >
-                                    Rotate
-                                </Typography>
-                                <AppSwitch open={rotate} setOpen={setRotate} />
+                                <Slider
+                                    sx={{
+                                        visibility: `${
+                                            powerMode === Mode.EnegySave
+                                                ? 'hidden'
+                                                : 'visible'
+                                        }`,
+                                    }}
+                                    value={temperature}
+                                    setValue={setTemperature}
+                                />
                             </Box>
                             <Box className='home-setting__timer'>
                                 <Typography
@@ -75,7 +89,12 @@ const Home = (props: Props) => {
                                 />
                             </Box>
                             <Box className='home-setting__countdown'>
-                                <Counter hours={0} minutes={1} seconds={0} />
+                                <Counter
+                                    hours={0}
+                                    minutes={1}
+                                    seconds={0}
+                                    setOpenDialog={setOpenDialog}
+                                />
                             </Box>
                         </Box>
                     </Grid>
