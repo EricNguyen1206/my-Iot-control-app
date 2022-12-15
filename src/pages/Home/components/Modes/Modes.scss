@@ -1,0 +1,52 @@
+@import '../../../../styles/variables';
+
+$mode-transition: all 0.5s ease;
+
+.modes {
+    width: $w-full;
+    height: $h-full;
+    padding: $mg-1;
+    box-shadow: shadowing($disabled, $white);
+    border-radius: $rounded;
+    display: flex;
+    align-items: center;
+    position: relative;
+    input {
+        display: none;
+    }
+    > input:checked + label {
+        transition: $mode-transition;
+        color: $primary;
+    }
+
+    &__1,
+    &__2,
+    &__3 {
+        flex: 1;
+        height: $h-full;
+        font-size: $fs-md;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        color: $dark-4;
+        transition: $mode-transition;
+        p {
+            margin: $mg-1;
+            display: flex;
+            align-items: center;
+        }
+
+        &:hover {
+            color: $primary;
+        }
+        &.active {
+            border-radius: $shaped;
+            box-shadow: innerShadowing($disabled, $white);
+            pointer-events: none;
+            p {
+                color: $primary;
+            }
+        }
+    }
+}

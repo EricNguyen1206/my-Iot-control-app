@@ -1,0 +1,23 @@
+@import '../../../../styles/variables';
+$counter-fontsize: 2.8rem;
+.counter {
+    width: $w-full;
+    height: $h-full;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $neutro-info;
+    box-shadow: innerShadowing($disabled, $white);
+    border-radius: $rounded;
+    &__number {
+        font-size: $counter-fontsize !important;
+        font-weight: $fw-700 !important;
+        color: $primary;
+    }
+    &__colon {
+        font-size: $counter-fontsize !important;
+        font-weight: $fw-700 !important;
+        color: $primary;
+        text-shadow: shadowing($disabled, $white);
+    }
+}
