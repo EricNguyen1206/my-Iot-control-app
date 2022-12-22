@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import './Counter.scss';
+import moment from 'moment';
 
 type Props = {
     hours: number;

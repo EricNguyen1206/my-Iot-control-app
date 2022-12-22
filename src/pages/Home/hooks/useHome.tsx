@@ -10,30 +10,31 @@ export type HomeHookType = {
     rotate: boolean;
     powerMode: Mode;
     powerOn: boolean;
-    countdown: number;
+    countdown: Date;
     temperature: number;
     openDialog: boolean;
     startTimer: boolean;
     setRotate: React.Dispatch<React.SetStateAction<boolean>>;
     setPowerMode: React.Dispatch<React.SetStateAction<Mode>>;
     setPowerOn: React.Dispatch<React.SetStateAction<boolean>>;
-    setCountdown: React.Dispatch<React.SetStateAction<number>>;
+    setCountdown: React.Dispatch<React.SetStateAction<Date>>;
     setTemperature: React.Dispatch<React.SetStateAction<number>>;
     setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
     setStartTimer: React.Dispatch<React.SetStateAction<boolean>>;
 };
 export default function useHome(): HomeHookType {
-    const [countdown, setCountdown] = useState<number>(0);
+    const [countdown, setCountdown] = useState<Date>(() => new Date());
     const [startTimer, setStartTimer] = useState<boolean>(false);
+    const [powerOn, setPowerOn] = useState<boolean>(false);
     const [timer] = useCountdown({
-        milliseconds: countdown,
+        countdown,
         startTimer,
         setStartTimer,
+        setPowerOn,
     });
-    const [powerOn, setPowerOn] = useState<boolean>(false);
     const [powerMode, setPowerMode] = useState<Mode>(Mode.EnegySave);
     const [temperature, setTemperature] = useState<number>(32);
-    const [openDialog, setOpenDialog] = useState<boolean>(true);
+    const [openDialog, setOpenDialog] = useState<boolean>(false);
     const [rotate, setRotate] = useState<boolean>(false);
 
     return {

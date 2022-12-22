@@ -11,6 +11,7 @@ import {
     OutlinedInput,
     Select,
     SelectChangeEvent,
+    TextField,
 } from '@mui/material';
 import { HOURS, MINUTES } from 'constant/Timer';
 import React, { useState } from 'react';
@@ -19,11 +20,14 @@ import './TimerDialog.scss';
 type Props = {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    // setCountdown: React.Dispatch<React.SetStateAction<Date>>;
+    setCountdown: any;
 };
 
-const TimerDialog = ({ open, setOpen }: Props) => {
+const TimerDialog = ({ open, setOpen, setCountdown }: Props) => {
     const [hours, setHours] = useState<number>(0);
     const [minutes, setMinutes] = useState<number>(0);
+
     const handleChangeHours = (event: SelectChangeEvent<typeof hours>) => {
         setHours(Number(event.target.value));
     };
@@ -40,6 +44,19 @@ const TimerDialog = ({ open, setOpen }: Props) => {
             setOpen(false);
         }
     };
+
+    const handleOk = () => {
+        let time = new Date();
+        if (hours < time.getHours()) {
+            time.setDate(time.getDate() + 1);
+        }
+        time.setHours(hours);
+        time.setMinutes(minutes);
+        time.setSeconds(0);
+        setCountdown(time);
+        setOpen(false);
+    };
+
     return (
         <Dialog
             disableEscapeKeyDown
@@ -61,7 +78,9 @@ const TimerDialog = ({ open, setOpen }: Props) => {
                             input={<OutlinedInput label='Hours' />}
                         >
                             {HOURS.map((hour) => (
-                                <MenuItem value={hour}>{hour}</MenuItem>
+                                <MenuItem key={hour} value={hour}>
+                                    {hour}
+                                </MenuItem>
                             ))}
                         </Select>
                     </FormControl>
@@ -76,7 +95,9 @@ const TimerDialog = ({ open, setOpen }: Props) => {
                             input={<OutlinedInput label='Minutes' />}
                         >
                             {MINUTES.map((minutes) => (
-                                <MenuItem value={minutes}>{minutes}</MenuItem>
+                                <MenuItem key={minutes} value={minutes}>
+                                    {minutes}
+                                </MenuItem>
                             ))}
                         </Select>
                     </FormControl>
@@ -84,7 +105,7 @@ const TimerDialog = ({ open, setOpen }: Props) => {
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={handleClose}>Ok</Button>
+                <Button onClick={handleOk}>Ok</Button>
             </DialogActions>
         </Dialog>
     );

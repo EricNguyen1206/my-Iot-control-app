@@ -31,7 +31,6 @@ const Home = (props: Props) => {
         setOpenDialog,
         setStartTimer,
     } = useHome();
-
     return (
         <React.Fragment>
             <CssBaseline />
@@ -86,13 +85,14 @@ const Home = (props: Props) => {
                                 <TimerDialog
                                     open={openDialog}
                                     setOpen={setOpenDialog}
+                                    setCountdown={setCountdown}
                                 />
                             </Box>
                             <Box className='home-setting__countdown'>
                                 <Counter
-                                    hours={0}
-                                    minutes={1}
-                                    seconds={0}
+                                    hours={timer.hours}
+                                    minutes={timer.minutes}
+                                    seconds={timer.seconds}
                                     setOpenDialog={setOpenDialog}
                                 />
                             </Box>

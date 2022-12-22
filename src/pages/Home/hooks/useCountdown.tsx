@@ -8,54 +8,41 @@ export type Timer = {
 };
 
 type CountdownHookProps = {
-    milliseconds: number;
+    countdown: Date;
     startTimer: boolean;
     setStartTimer: React.Dispatch<React.SetStateAction<boolean>>;
+    setPowerOn: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const useCountdown = ({
-    milliseconds,
+    countdown,
     startTimer,
     setStartTimer,
+    setPowerOn,
 }: CountdownHookProps) => {
-    const [countDown, setCountDown] = useState<number>(milliseconds);
+    const [timer, setTimer] = useState<Date>(() => new Date());
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setCountDown((prev) => prev - 1000);
+            setTimer(new Date());
         }, 1000);
-        if (!startTimer) {
+        if (countdown === timer || startTimer === false) {
+            setPowerOn(false);
             clearInterval(interval);
         }
         return () => clearInterval(interval);
-    }, [startTimer]);
-
-    return getReturnValues({
-        milliseconds: countDown,
-        startTimer,
-        setStartTimer,
     });
+
+    return getReturnValues(timer);
 };
 
-const getReturnValues = ({
-    milliseconds,
-    startTimer,
-    setStartTimer,
-}: CountdownHookProps): [Timer] => {
+const getReturnValues = (timer: Date): [Timer] => {
     // calculate time left
-    const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(
-        (milliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
-    const minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((milliseconds % (1000 * 60)) / 1000);
-    const timer = {
-        days,
-        hours,
-        minutes,
-        seconds,
-    };
-    return [timer];
+    const days = timer.getDate();
+    const hours = timer.getHours();
+    const minutes = timer.getMinutes();
+    const seconds = timer.getSeconds();
+    return [{ days, hours, minutes, seconds }];
 };
 
 export { useCountdown };
