@@ -1,5 +1,5 @@
 import { Box, Container, CssBaseline, Grid, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Home.scss';
 import AppSwitch from 'components/AppSwitch';
 import TimerDialog from 'components/TimerDialog';
@@ -10,11 +10,15 @@ import PlayButton from './components/PlayButton';
 import TempClock from 'components/TempClock';
 // import Slider from '@mui/material/Slider/Slider';
 import Slider from 'components/Slider';
+import { getDatabase, ref, onValue, set } from 'firebase/database';
+import { db } from 'configs/firebase';
 
 type Props = {};
 
 const Home = (props: Props) => {
     const {
+        timerEnable,
+        tempEnable,
         timer,
         rotate,
         powerOn,
@@ -30,7 +34,34 @@ const Home = (props: Props) => {
         setTemperature,
         setOpenDialog,
         setStartTimer,
+        setTempEnable,
+        setTimerEnable,
     } = useHome();
+
+    useEffect(() => {
+        const starCountRef = ref(db, '/');
+        onValue(starCountRef, (snapshot) => {
+            const data = snapshot.val();
+            setPowerOn(data.fan.enable);
+            setTimerEnable(data.timer.enable);
+            setTempEnable(data.temp.enable);
+        });
+    }, []);
+
+    const handleOnOffFan = () => {
+        const db = getDatabase();
+        set(ref(db, 'fan/enable'), !powerOn);
+    };
+
+    const handleEnableTimer = () => {
+        const db = getDatabase();
+        set(ref(db, 'timer/enable'), !timerEnable);
+    };
+
+    const handleEnableTempControl = () => {
+        const db = getDatabase();
+        set(ref(db, 'temp/enable'), !rotate);
+    };
 
     return (
         <React.Fragment>
@@ -46,7 +77,7 @@ const Home = (props: Props) => {
                     <Grid item xs={4} className='home-power'>
                         <PlayButton
                             powerOn={powerOn}
-                            setPowerOn={setPowerOn}
+                            setPowerOn={handleOnOffFan}
                             mode={powerMode}
                             temperature={temperature}
                         />
@@ -80,8 +111,8 @@ const Home = (props: Props) => {
                                     Timer
                                 </Typography>
                                 <AppSwitch
-                                    open={startTimer}
-                                    setOpen={setStartTimer}
+                                    open={timerEnable}
+                                    setOpen={handleEnableTimer}
                                 />
                                 <TimerDialog
                                     open={openDialog}

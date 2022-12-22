@@ -14,6 +14,8 @@ export type HomeHookType = {
     temperature: number;
     openDialog: boolean;
     startTimer: boolean;
+    timerEnable: boolean;
+    tempEnable: boolean;
     setRotate: React.Dispatch<React.SetStateAction<boolean>>;
     setPowerMode: React.Dispatch<React.SetStateAction<Mode>>;
     setPowerOn: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,6 +23,8 @@ export type HomeHookType = {
     setTemperature: React.Dispatch<React.SetStateAction<number>>;
     setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
     setStartTimer: React.Dispatch<React.SetStateAction<boolean>>;
+    setTimerEnable: React.Dispatch<React.SetStateAction<boolean>>;
+    setTempEnable: React.Dispatch<React.SetStateAction<boolean>>;
 };
 export default function useHome(): HomeHookType {
     const [countdown, setCountdown] = useState<number>(0);
@@ -33,8 +37,10 @@ export default function useHome(): HomeHookType {
     const [powerOn, setPowerOn] = useState<boolean>(false);
     const [powerMode, setPowerMode] = useState<Mode>(Mode.EnegySave);
     const [temperature, setTemperature] = useState<number>(32);
-    const [openDialog, setOpenDialog] = useState<boolean>(true);
+    const [openDialog, setOpenDialog] = useState<boolean>(false);
     const [rotate, setRotate] = useState<boolean>(false);
+    const [timerEnable, setTimerEnable] = useState<boolean>(false);
+    const [tempEnable, setTempEnable] = useState<boolean>(false);
 
     return {
         timer,
@@ -45,6 +51,8 @@ export default function useHome(): HomeHookType {
         temperature,
         openDialog,
         startTimer,
+        timerEnable,
+        tempEnable,
         setRotate,
         setPowerOn,
         setPowerMode,
@@ -52,5 +60,7 @@ export default function useHome(): HomeHookType {
         setTemperature,
         setOpenDialog,
         setStartTimer,
+        setTimerEnable,
+        setTempEnable,
     };
 }
