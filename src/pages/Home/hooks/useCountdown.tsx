@@ -22,16 +22,16 @@ const useCountdown = ({
 }: CountdownHookProps) => {
     const [timer, setTimer] = useState<Date>(() => new Date());
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setTimer(new Date());
-        }, 1000);
-        if (countdown === timer || startTimer === false) {
-            setPowerOn(false);
-            clearInterval(interval);
-        }
-        return () => clearInterval(interval);
-    });
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         setTimer(new Date());
+    //     }, 1000);
+    //     if (countdown === timer || startTimer === false) {
+    //         setPowerOn(false);
+    //         clearInterval(interval);
+    //     }
+    //     return () => clearInterval(interval);
+    // });
 
     return getReturnValues(timer);
 };

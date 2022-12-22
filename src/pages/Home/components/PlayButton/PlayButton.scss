@@ -2,10 +2,12 @@
 $play-btn-transition: all 0.2s linear;
 $waves-shadow: 0.4rem 0.4rem 0.8rem $disabled, -0.4rem -0.4rem 0.8rem $white;
 $icon-font-size: 2.8rem;
+$btn-width: 8rem;
+$circle-width: 12rem;
 
 .circle {
-    width: 9rem;
-    height: 100%;
+    $circle-width: 12rem;
+    height: $h-full;
     justify-self: center;
     border-radius: 1rem;
     display: grid;
@@ -16,8 +18,8 @@ $icon-font-size: 2.8rem;
     &__btn {
         grid-row: 1 / 2;
         grid-column: 1 / 2;
-        width: 6rem;
-        height: 6rem;
+        width: $btn-width;
+        height: $btn-width;
         display: flex;
         margin: 0.6rem;
         justify-content: center;
@@ -54,6 +56,11 @@ $icon-font-size: 2.8rem;
 
         &--number.MuiTypography-root {
             margin-left: $mg-3;
+            font-size: $icon-font-size;
+            font-weight: $fw-500;
+            color: $primary;
+        }
+        &--time.MuiTypography-root {
             font-size: $icon-font-size;
             font-weight: $fw-500;
             color: $primary;

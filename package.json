@@ -19,6 +19,7 @@
     "@types/react-dom": "^18.0.2",
     "@types/redux-actions": "^2.6.2",
     "axios": "^1.2.0",
+    "firebase": "^9.15.0",
     "install": "^0.13.0",
     "moment": "^2.29.4",
     "npm": "^9.2.0",

@@ -42,7 +42,7 @@
                 width: $w-full;
                 height: 60px;
             }
-            &__rotate {
+            &__temperature {
                 display: flex;
                 width: $w-full;
                 justify-content: space-between;
@@ -58,12 +58,16 @@
                 flex: 1;
                 display: flex;
                 align-items: center;
-                justify-content: space-between;
+                justify-content: space-around;
+                flex-direction: column;
                 width: $w-full;
                 &--label {
                     font-size: $fs-xl;
                     font-weight: $fw-400;
                     color: $primary;
+                }
+                &--item {
+                    width: $w-full;
                 }
             }
             &__countdown {

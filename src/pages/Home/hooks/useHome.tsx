@@ -1,57 +1,94 @@
-import { useState } from 'react';
-import { Timer, useCountdown } from './useCountdown';
+import { db } from 'configs/firebase';
+import { useEffect, useState } from 'react';
+import { ref, onValue } from 'firebase/database';
+import moment, { Moment } from 'moment';
+import getNextHours from 'utils/getNextHour';
+import useFirebase from 'hooks/useFirebase';
 export enum Mode {
-    EnegySave = 1,
-    Medium = 2,
-    Strong = 3,
+    Fan = 1,
+    Temp = 2,
+    Timer = 3,
 }
 export type HomeHookType = {
-    timer: Timer;
-    rotate: boolean;
-    powerMode: Mode;
     powerOn: boolean;
-    countdown: Date;
+    powerMode: Mode;
     temperature: number;
-    openDialog: boolean;
-    startTimer: boolean;
-    setRotate: React.Dispatch<React.SetStateAction<boolean>>;
+    startTime: Moment | null;
+    endTime: Moment | null;
     setPowerMode: React.Dispatch<React.SetStateAction<Mode>>;
     setPowerOn: React.Dispatch<React.SetStateAction<boolean>>;
-    setCountdown: React.Dispatch<React.SetStateAction<Date>>;
     setTemperature: React.Dispatch<React.SetStateAction<number>>;
-    setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
-    setStartTimer: React.Dispatch<React.SetStateAction<boolean>>;
+    setFbStartTime: any;
+    setFbEndTime: any;
 };
 export default function useHome(): HomeHookType {
-    const [countdown, setCountdown] = useState<Date>(() => new Date());
-    const [startTimer, setStartTimer] = useState<boolean>(false);
     const [powerOn, setPowerOn] = useState<boolean>(false);
-    const [timer] = useCountdown({
-        countdown,
-        startTimer,
-        setStartTimer,
-        setPowerOn,
-    });
-    const [powerMode, setPowerMode] = useState<Mode>(Mode.EnegySave);
+    const [powerMode, setPowerMode] = useState<Mode>(Mode.Fan);
     const [temperature, setTemperature] = useState<number>(32);
-    const [openDialog, setOpenDialog] = useState<boolean>(false);
-    const [rotate, setRotate] = useState<boolean>(false);
+    const [startTime, setStartTime] = useState<Moment | null>(
+        moment(new Date())
+    );
+    const [endTime, setEndTime] = useState<Moment | null>(
+        moment(getNextHours())
+    );
+
+    const {
+        curTemperature,
+        handleOnOffFan,
+        handleSetStartTimer,
+        handleSetEndTimer,
+    } = useFirebase();
+
+    const setFbStartTime = (time: Moment) => {
+        const timer = moment(time).format('H:mm');
+        handleSetStartTimer(timer);
+        setStartTime(time);
+    };
+
+    const setFbEndTime = (time: Moment) => {
+        const timer = moment(time).format('H:mm');
+        handleSetEndTimer(timer);
+        setEndTime(time);
+    };
+
+    useEffect(() => {
+        const starCountRef = ref(db, '/');
+        onValue(starCountRef, (snapshot) => {
+            const data = snapshot.val();
+            setPowerOn(data.fan.enable);
+            setTemperature(data.temp.threshold);
+            setPowerMode(
+                data.timer.enable
+                    ? Mode.Timer
+                    : data.temp.enable
+                    ? Mode.Temp
+                    : Mode.Fan
+            );
+        });
+    }, []);
+
+    useEffect(() => {
+        if (powerMode === Mode.Temp) {
+            if (curTemperature > temperature && powerMode) {
+                setPowerOn(true);
+                handleOnOffFan(true);
+            } else {
+                setPowerOn(false);
+                handleOnOffFan(false);
+            }
+        }
+    }, [curTemperature, temperature, powerMode]);
 
     return {
-        timer,
-        rotate,
         powerOn,
         powerMode,
-        countdown,
         temperature,
-        openDialog,
-        startTimer,
-        setRotate,
+        startTime,
+        endTime,
         setPowerOn,
         setPowerMode,
-        setCountdown,
         setTemperature,
-        setOpenDialog,
-        setStartTimer,
+        setFbStartTime,
+        setFbEndTime,
     };
 }

@@ -1,6 +1,8 @@
+import { debounce } from '@mui/material';
 import Box from '@mui/material/Box/Box';
 import Slider from '@mui/material/Slider/Slider';
-import React, { useState } from 'react';
+import useFirebase from 'hooks/useFirebase';
+import React, { useCallback, useMemo, useState } from 'react';
 import './Slider.scss';
 
 type Props = {
@@ -33,10 +35,15 @@ function valuetext(value: number) {
 }
 
 const SlideSwitch = ({ value, setValue, ...props }: Props) => {
+    const { handleSetTempThreshold } = useFirebase();
     const handleChangeValue = (e: Event) => {
         const target: any = e.target;
         setValue(target.value);
+        debouncedChangeHandler(target.value);
     };
+    const debouncedChangeHandler = useMemo(() => {
+        return debounce(handleSetTempThreshold, 1000);
+    }, [handleSetTempThreshold]);
     return (
         <Box className='slider ' {...props}>
             <Slider
@@ -45,6 +52,7 @@ const SlideSwitch = ({ value, setValue, ...props }: Props) => {
                 value={value}
                 onChange={handleChangeValue}
                 getAriaValueText={valuetext}
+                valueLabelDisplay='auto'
                 step={1}
                 marks={marks}
                 max={50}
