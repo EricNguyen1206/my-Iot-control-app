@@ -14,6 +14,7 @@ type Props = {};
 
 const Home = (props: Props) => {
     const {
+        curTime,
         powerOn,
         powerMode,
         temperature,
@@ -40,6 +41,7 @@ const Home = (props: Props) => {
                     >
                         <Grid item xs={4} className='home-power'>
                             <PlayButton
+                                curTime={curTime}
                                 powerOn={powerOn}
                                 setPowerOn={setPowerOn}
                                 mode={powerMode}

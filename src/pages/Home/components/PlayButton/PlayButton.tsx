@@ -6,7 +6,9 @@ import { Mode } from 'pages/Home/hooks/useHome';
 import { Typography } from '@mui/material';
 import useFirebase from 'hooks/useFirebase';
 import moment, { Moment } from 'moment';
+import FanImg from '../../../../assets/images/fan-solid.svg';
 type Props = {
+    curTime: Moment | null;
     powerOn: boolean;
     mode?: Mode;
     startTime: Moment | null;
@@ -16,6 +18,7 @@ type Props = {
 };
 
 const PlayButton = ({
+    curTime,
     powerOn,
     mode = Mode.Fan,
     startTime,
@@ -29,28 +32,6 @@ const PlayButton = ({
         handleEnableTempControl,
         handleEnableTimer,
     } = useFirebase();
-    const [curTime, setCurrentTime] = useState<Moment | null>(
-        moment(new Date())
-    );
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            const curMoment = moment(new Date());
-            if (
-                moment(curMoment).isBefore(endTime) &&
-                moment(curMoment).isAfter(startTime)
-            ) {
-                handleOnOffFan(true);
-                setPowerOn(true);
-            } else {
-                handleOnOffFan(false);
-                setPowerOn(false);
-            }
-            setCurrentTime(curMoment);
-        }, 5000);
-
-        return () => clearInterval(interval);
-    }, []);
 
     const handleClick = () => {
         handleOnOffFan(!powerOn);
@@ -85,6 +66,11 @@ const PlayButton = ({
                     </Typography>
                 )}
             </span>
+            {/* <img
+                className={`wings ${!powerOn && 'paused'}`}
+                src={FanImg}
+                alt='Fan'
+            /> */}
             <span className={`circle__back-1 ${!powerOn && 'paused'}`} />
             <span className={`circle__back-2 ${!powerOn && 'paused'}`} />
         </div>

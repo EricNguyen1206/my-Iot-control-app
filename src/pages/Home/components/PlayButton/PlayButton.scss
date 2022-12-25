@@ -15,6 +15,17 @@ $circle-width: 12rem;
     justify-items: center;
     align-items: center;
 
+    .wings {
+        filter: invert(34%) sepia(89%) saturate(1000%) hue-rotate(184deg)
+            brightness(94%) contrast(96%);
+        animation: rotation 2s infinite linear;
+        width: 240px;
+        position: absolute;
+    }
+    .wings.paused {
+        animation: none;
+    }
+
     &__btn {
         grid-row: 1 / 2;
         grid-column: 1 / 2;
@@ -114,5 +125,32 @@ $circle-width: 12rem;
     100% {
         transform: scale(2);
         opacity: 0;
+    }
+}
+
+@keyframes rotate {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes rotate {
+    from {
+        -moz-transform: rotate(0deg);
+    }
+    to {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
     }
 }

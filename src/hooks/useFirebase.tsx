@@ -21,7 +21,14 @@ const useFirebase = () => {
         });
     };
 
+    const handleGetDataOnOff = () => {
+        const db = getDatabase();
+        // return db.fan.enable;
+        console.log('db', db);
+    };
+
     const handleOnOffFan = (fanEnable: boolean) => {
+        console.log('first');
         const db = getDatabase();
         set(ref(db, 'fan/enable'), fanEnable);
     };
@@ -53,6 +60,7 @@ const useFirebase = () => {
 
     return {
         curTemperature,
+        handleGetDataOnOff,
         handleOnOffFan,
         handleEnableTimer,
         handleSetStartTimer,

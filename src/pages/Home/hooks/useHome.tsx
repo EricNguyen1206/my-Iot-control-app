@@ -10,6 +10,7 @@ export enum Mode {
     Timer = 3,
 }
 export type HomeHookType = {
+    curTime: Moment | null;
     powerOn: boolean;
     powerMode: Mode;
     temperature: number;
@@ -25,6 +26,9 @@ export default function useHome(): HomeHookType {
     const [powerOn, setPowerOn] = useState<boolean>(false);
     const [powerMode, setPowerMode] = useState<Mode>(Mode.Fan);
     const [temperature, setTemperature] = useState<number>(32);
+    const [curTime, setCurrentTime] = useState<Moment | null>(
+        moment(new Date())
+    );
     const [startTime, setStartTime] = useState<Moment | null>(
         moment(new Date())
     );
@@ -32,12 +36,7 @@ export default function useHome(): HomeHookType {
         moment(getNextHours())
     );
 
-    const {
-        curTemperature,
-        handleOnOffFan,
-        handleSetStartTimer,
-        handleSetEndTimer,
-    } = useFirebase();
+    const { handleSetStartTimer, handleSetEndTimer } = useFirebase();
 
     const setFbStartTime = (time: Moment) => {
         const timer = moment(time).format('H:mm');
@@ -67,19 +66,8 @@ export default function useHome(): HomeHookType {
         });
     }, []);
 
-    useEffect(() => {
-        if (powerMode === Mode.Temp) {
-            if (curTemperature > temperature && powerMode) {
-                setPowerOn(true);
-                handleOnOffFan(true);
-            } else {
-                setPowerOn(false);
-                handleOnOffFan(false);
-            }
-        }
-    }, [curTemperature, temperature, powerMode]);
-
     return {
+        curTime,
         powerOn,
         powerMode,
         temperature,
