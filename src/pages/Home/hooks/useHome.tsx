@@ -39,13 +39,13 @@ export default function useHome(): HomeHookType {
     const { handleSetStartTimer, handleSetEndTimer } = useFirebase();
 
     const setFbStartTime = (time: Moment) => {
-        const timer = moment(time).format('H:mm');
+        const timer = moment(time).format('H:m');
         handleSetStartTimer(timer);
         setStartTime(time);
     };
 
     const setFbEndTime = (time: Moment) => {
-        const timer = moment(time).format('H:mm');
+        const timer = moment(time).format('H:m');
         handleSetEndTimer(timer);
         setEndTime(time);
     };
@@ -64,6 +64,13 @@ export default function useHome(): HomeHookType {
                     : Mode.Fan
             );
         });
+    }, []);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentTime(moment(new Date()));
+        }, 1000);
+        return () => clearInterval(interval);
     }, []);
 
     return {
